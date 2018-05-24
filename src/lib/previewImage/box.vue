@@ -1,35 +1,21 @@
 <template>
     <div :class="className">
       <slot name="item"></slot>
-      <transition name="">
-        <div class="preview_popover_container" v-if="currentIndex != null">
-          <div class="preview_popover_container_bg" @click="currentIndex = null"></div>
-          <div class="preview_popover_img_container">
-            <span @click="preImage" class="pre_next_btn pre_btn">
-              <template v-if="currentIndex<=0">
-                没有上一张了
-              </template>
-              <template v-else>
-                上一张
-              </template>
-            </span>
-              <img class="preview_popover_img" :src="slots[currentIndex].componentOptions.propsData.src" alt="">
-              <span @click="nextImage" class="pre_next_btn next_btn">
-              <template v-if="currentIndex>=slots.length-1">
-                没有下一张了
-              </template>
-              <template v-else>
-                下一张
-              </template>
-            </span>
-            <div class="thumbnail_container" v-if="thumb">
-              <div class="thumbnail_item_box" v-for="(thumb, index) in slots" :key="index" :class="(currentIndex==index)?'current_thumb':'1'" @click="changeImage(index)">
-                <img class="thumbnail_item_img" :src="thumb.componentOptions.propsData.src" alt="">
-              </div>
-            </div>
+      <div class="preview_popover_container_bg" v-if="currentIndex != null" @click="currentIndex = null"></div>
+      <div class="preview_popover_container" v-if="currentIndex != null">
+        <div class="preview_popover_imgs_container">
+          <div  v-for="(viewImage, index) in slots" class="preview_popover_img_container"  :key="index" v-show="index == currentIndex">
+            <img class="preview_popover_img"  :src="viewImage.componentOptions.propsData.src" alt="">
           </div>
         </div>
-      </transition>
+        <div class="thumbnail_container" v-if="thumb">
+          <ul :style="{left: prewthumbUlLeft+'px'}">
+            <li class="thumbnail_item_box" v-for="(thumb, index) in slots" :key="index" :class="(currentIndex==index)?'current_thumb':'1'" @click="changeImage(index,$event)">
+              <img class="thumbnail_item_img" :src="thumb.componentOptions.propsData.src" alt="">
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -44,7 +30,8 @@ export default {
   },
   data () {
     return {
-      currentIndex: null
+      currentIndex: null,
+      prewthumbUlLeft: 0
     }
   },
   methods: {
@@ -55,8 +42,18 @@ export default {
       let maxIndex = this.slots.length - 1
       this.currentIndex = this.currentIndex >= maxIndex ? maxIndex : this.currentIndex + 1
     },
-    changeImage (index) {
+    changeImage (index, event) {
+      console.log(event)
       this.currentIndex = index
+    },
+    keyboardControl (e) {
+      const that = this
+      if (e.keyCode === 37) {
+        that.preImage()
+      }
+      if (e.keyCode === 39) {
+        that.nextImage()
+      }
     }
   },
   computed: {
@@ -71,41 +68,83 @@ export default {
       }
     }
   },
+  watch: {
+    currentIndex (val) {
+      const that = this
+      if (val == null) {
+        document.removeEventListener('keyup', that.keyboardControl, false)
+      } else {
+        document.addEventListener('keyup', that.keyboardControl, false)
+      }
+    }
+  },
   mounted () {
-    this.slots.map((item, index) => {
+    const that = this
+    that.slots.map((item, index) => {
       item.componentInstance.itemId = index
-    })
-    window.addEventListener('keyUp', function (e) {
-      console.log(e)
     })
   }
 }
 </script>
 <style scoped>
-  .preview_popover_container
+  .preview_popover_container_bg
   {
     position: fixed;
     left: 0;
     bottom: 0;
     right: 0;
     top: 0;
-    overflow: auto;
+    z-index: 19891018;
     background-color: rgba(0,0,0,.8);
   }
-  .preview_popover_container_bg
-  {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
-  }
-  .preview_popover_img_container
+  .preview_popover_container
   {
     position: absolute;
     top: 50%;
     left: 50%;
+    height: 100%;
+    width: 800px;
+    background-color: #000;
+    display: flex;
+    padding: 20px;
+    flex-flow: column;
+    z-index: 19891019;
     transform: translate(-50%, -50%);
+  }
+  .preview_popover_imgs_container
+  {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  .thumbnail_container
+  {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    flex: 0 0 60px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .thumbnail_container ul
+  {
+    position: relative;
+    left: 40px;
+    display: flex;
+    flex-flow: nowrap;
+    align-content: center;
+    align-items: center;
+    justify-content: left;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+  }
+  .preview_popover_img_container
+  {
   }
   .preview_popover_img
   {
@@ -142,37 +181,45 @@ export default {
     left: 100%;
     margin-left: 20px;
   }
-  .thumbnail_container
-  {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    margin-top: 20px;
-  }
   .thumbnail_item_box
   {
-    display: inline-block;
-    height: 60px;
+    position: relative;
+    display: block;
+    height: 56px;
     margin-left: 20px;
-    border: 1px solid #ddd;
+    border: 2px solid transparent;
     transition: all .2s linear;
   }
   .thumbnail_item_box:hover
   {
     cursor: pointer;
-    border-color: #ff0000;
+    border-color: #fff;
   }
   .current_thumb
   {
-    border-color: #ff0000;
+    border-color: #fff;
   }
   .thumbnail_item_box:first-child{
     margin-left: 0;
   }
   .thumbnail_item_img
   {
-    height: 60px;
+    height: 56px;
+  }
+  .slide-fade-enter-active {
+    transition: all .8s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter
+   {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  .slide-fade-leave-to
+  {
+    transform: translateX(-10px);
+    opacity: 0;
   }
 </style>

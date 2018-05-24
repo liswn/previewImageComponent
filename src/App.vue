@@ -2,7 +2,17 @@
   <div id="app">
     <lw-image-box>
       <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1526970325735RHaN3YZtrKij6T5awTTGUzyskYJUhWBl.jpg?x-oss-process=image/resize,w_400,h_225,m_fill,limit_0"></lw-image-item>
-      <lw-image-item slot="item" class="imageBox" className="image" src="https://i0.hdslb.com/bfs/bangumi/8ff39c776f473d8f4fe77910cec59e87ebd1e275.jpg@240w_320h.jpg"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062121919i2y2kuyxTl7uvCX3VQcZ6OcNyIOQK3Sf.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
+      <lw-image-item slot="item" class="imageBox" className="image" src="http://image.cloud.zqcj.net.cn/image/1527062951944BmjiJlwaWiZzzKyz6KDvYjbA39MKDVEP.jpg?x-oss-process=image/resize,w_266,h_225,m_fill,limit_0"></lw-image-item>
     </lw-image-box>
   </div>
 </template>
@@ -17,6 +27,7 @@ export default {
     lwImageItem
   }
 }
+
 </script>
 <style>
   .imageBox
