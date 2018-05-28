@@ -4,9 +4,11 @@
       <div class="preview_popover_container_bg" v-if="currentIndex != null" @click="currentIndex = null"></div>
       <div class="preview_popover_container" v-if="currentIndex != null">
         <div class="preview_popover_imgs_container">
-          <div  v-for="(viewImage, index) in slots" class="preview_popover_img_container"  :key="index" v-show="index == currentIndex">
-            <img class="preview_popover_img"  :src="viewImage.componentOptions.propsData.src" alt="">
-          </div>
+          <transition :name="animateName"  mode="out-in" v-for="(viewImage, index) in slots" :key="index">
+            <div class="preview_popover_img_container"   v-show="index == currentIndex">
+              <img class="preview_popover_img"  :src="viewImage.componentOptions.propsData.src" alt="">
+            </div>
+          </transition>
         </div>
         <div class="thumbnail_container" v-if="thumb">
           <ul :style="{left: prewthumbUlLeft+'px'}">
@@ -31,20 +33,34 @@ export default {
   data () {
     return {
       currentIndex: null,
-      prewthumbUlLeft: 0
+      prewthumbUlLeft: 0,
+      animateName: 'slide-fade-left'
     }
   },
   methods: {
     preImage () {
-      this.currentIndex = this.currentIndex <= 0 ? 0 : this.currentIndex - 1
+      this.animateName = 'slide-fade-left'
+      this.$nextTick(() => {
+        this.currentIndex = this.currentIndex <= 0 ? 0 : this.currentIndex - 1
+      })
     },
     nextImage () {
       let maxIndex = this.slots.length - 1
-      this.currentIndex = this.currentIndex >= maxIndex ? maxIndex : this.currentIndex + 1
+      this.animateName = 'slide-fade-right'
+      this.$nextTick(() => {
+        this.currentIndex = this.currentIndex >= maxIndex ? maxIndex : this.currentIndex + 1
+      })
     },
     changeImage (index, event) {
-      console.log(event)
-      this.currentIndex = index
+      if (index > this.currentIndex) {
+        this.animateName = 'slide-fade-right'
+      }
+      if (index < this.currentIndex) {
+        this.animateName = 'slide-fade-left'
+      }
+      this.$nextTick(() => {
+        this.currentIndex = index
+      })
     },
     keyboardControl (e) {
       const that = this
@@ -102,8 +118,9 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 100%;
-    width: 800px;
+    height: 80%;
+    max-width: 800px;
+    width: 100%;
     background-color: #000;
     display: flex;
     padding: 20px;
@@ -113,6 +130,7 @@ export default {
   }
   .preview_popover_imgs_container
   {
+    position: relative;
     display: flex;
     align-content: center;
     align-items: center;
@@ -145,6 +163,10 @@ export default {
   }
   .preview_popover_img_container
   {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
   }
   .preview_popover_img
   {
@@ -206,20 +228,34 @@ export default {
   {
     height: 56px;
   }
-  .slide-fade-enter-active {
-    transition: all .8s ease;
+  .slide-fade-right-leave-active,
+  .slide-fade-right-enter-active,
+  .slide-fade-left-leave-active,
+  .slide-fade-left-enter-active{
+    transition: all .6s cubic-bezier(.74,.36,.81,.36);
   }
-  .slide-fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter
+  .slide-fade-left-enter
    {
-    transform: translateX(10px);
+    left: 100%;
+    transform: translate(-100%,-50%);
     opacity: 0;
   }
-  .slide-fade-leave-to
+  .slide-fade-left-leave-to
   {
-    transform: translateX(-10px);
+    left: 0;
+    transform: translate(0,-50%);
+    opacity: 0;
+  }
+  .slide-fade-right-enter
+  {
+    left: 0;
+    transform: translate(0%,-50%);
+    opacity: 0;
+  }
+  .slide-fade-right-leave-to
+  {
+    left: 100%;
+    transform: translate(-100%,-50%);
     opacity: 0;
   }
 </style>
